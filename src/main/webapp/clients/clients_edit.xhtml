@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+>
+<h:form>
+    <div align="center">
+        <b>EDIT CLIENT</b><br/><br/>
+        ID: <h:inputText value="#{clientBean.selectedClient.id}"  var = 'id'  disabled="true"/> <br/><br/>
+        Name: <h:inputText value="#{clientBean.selectedClient.name}" var = 'name'/><br/><br/>
+        Surname: <h:inputText value="#{clientBean.selectedClient.surname}" var = 'surname'/><br/><br/>
+        <h:commandButton value="Save client" action="#{clientBean.saveSelectedClient()}"/><br/><br/>
+        <h:commandButton value="Delete client" action="#{clientBean.removeClient}"/>
+    </div>
+</h:form>
+</html>

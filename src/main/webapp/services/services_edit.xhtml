@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:form>
+    <div align="center">
+        <b>EDIT SERVICE</b><br/><br/>
+        ID: <h:inputText value="#{serviceBean.selectedService.id}"  var = 'id'  disabled="true"/> <br/><br/>
+        Name: <h:inputText value="#{serviceBean.selectedService.name}" var = 'name'/><br/><br/>
+        <h:commandButton value="Save service" action="#{clientBean.saveSelectedClient()}"/><br/><br/>
+        <h:commandButton value="Delete service" action="#{clientBean.removeClient}"/>
+    </div>
+</h:form>
+</html>

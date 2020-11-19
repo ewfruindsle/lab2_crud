@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:form>
+    <div align="center">
+        <ul>
+            <b>BILLS MANAGEMENT</b>
+            <h:dataTable value="#{billBean.bills}" var="bill" border="1">
+                <h:column>
+                    <f:facet name="header">Id</f:facet>
+                    #{bill.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Service Id</f:facet>
+                    #{bill.idService}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Client Id</f:facet>
+                    #{bill.idClient}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Total price</f:facet>
+                    #{bill.totalPrice}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Date</f:facet>
+                    #{bill.date}
+                </h:column>
+                <h:column>
+                    <f:facet name="header"> </f:facet>
+                    <h:commandButton value="Edit" action="#{billBean.billInfo(bill)}"/>
+                </h:column>
+            </h:dataTable><br/>
+            <h:commandButton value="Add bill" action="#{billBean.addBill}"/>
+        </ul>
+    </div>
+</h:form>
+</html>
