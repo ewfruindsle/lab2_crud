@@ -7,7 +7,6 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "bills")
-//@SecondaryTable(name = "bills")
 @NamedQueries({
         @NamedQuery(name = "Bill.findAll", query = "select b from Bill b")
 })

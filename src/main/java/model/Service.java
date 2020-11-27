@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table
+@Table(name = "services")
 @NamedQueries({
         @NamedQuery(name = "Service.findAll", query = "select s from Service s")
 })
