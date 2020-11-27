@@ -23,10 +23,14 @@
                     #{client.surname}
                 </h:column>
                 <h:column>
+                    <f:facet name="header">Subsidy type</f:facet>
+                    #{client.subsidyType}
+                </h:column>
+                <h:column>
                     <f:facet name="header"> </f:facet>
                     <h:commandButton value="Edit" action="#{clientBean.clientInfo(client)}"/>
                 </h:column>
-            </h:dataTable> <br/>
+            </h:dataTable> <br/><br/>
             <h:commandButton value="Add client" action="#{clientBean.addClient}"/>
         </ul>
     </div>

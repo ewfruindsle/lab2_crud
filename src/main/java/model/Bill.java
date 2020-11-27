@@ -1,11 +1,29 @@
 package model;
 
+import model.validation.Price;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "bills")
+//@SecondaryTable(name = "bills")
+@NamedQueries({
+        @NamedQuery(name = "Bill.findAll", query = "select b from Bill b")
+})
 public class Bill {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Basic
+    @Column(name = "idservice")
     private int idService;
+    @Basic
+    @Column(name = "idclient")
     private int idClient;
+    @Column(name = "totalprice")
+    @Price
     private int totalPrice;
     private LocalDate date;
 

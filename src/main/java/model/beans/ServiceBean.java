@@ -1,10 +1,6 @@
 package model.beans;
 
-import dao.ConnectionManager;
-import dao.DaoClient;
 import dao.DaoService;
-import dao.TableName;
-import model.Client;
 import model.Service;
 
 import javax.enterprise.context.SessionScoped;
@@ -17,7 +13,7 @@ import java.util.List;
 @ManagedBean(name = "serviceBean")
 @SessionScoped
 public class ServiceBean implements Serializable {
-    private DaoService daoService;
+    private final DaoService daoService;
     private Service selectedService;
 
     public Service getSelectedService() {
@@ -25,17 +21,11 @@ public class ServiceBean implements Serializable {
     }
 
     public ServiceBean() {
-        try {
-            daoService = (DaoService) ConnectionManager.shared().getDAO(TableName.SERVICE);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+        daoService = new DaoService();
     }
 
     public List<Service> getServices() {
-        List<Service> services = daoService.getAll();
-        services.sort(Comparator.comparing(Service::getId));
-        return services;
+        return daoService.getAll();
     }
 
     public String serviceInfo(Service service) {

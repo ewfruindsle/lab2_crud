@@ -1,9 +1,7 @@
 package model.beans;
 
 
-import dao.ConnectionManager;
 import dao.DaoClient;
-import dao.TableName;
 import model.Client;
 
 import javax.enterprise.context.RequestScoped;
@@ -15,7 +13,7 @@ import java.util.List;
 @ManagedBean(name = "clientBean")
 @RequestScoped
 public class ClientBean {
-    private DaoClient daoClient;
+    private final DaoClient daoClient;
     private Client selectedClient;
 
 
@@ -28,17 +26,11 @@ public class ClientBean {
     }
 
     public ClientBean() {
-        try {
-            daoClient = (DaoClient) ConnectionManager.shared().getDAO(TableName.CLIENT);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+        daoClient = new DaoClient();
     }
 
     public List<Client> getClients() {
-        List<Client> clients = daoClient.getAll();
-        clients.sort(Comparator.comparing(Client::getId));
-        return clients;
+        return daoClient.getAll();
     }
 
     public String clientInfo(Client client) {
@@ -56,7 +48,7 @@ public class ClientBean {
     }
 
     public String addClient() {
-        selectedClient = new Client(-1, "", "");
+        selectedClient = new Client();
         return "edit";
     }
 

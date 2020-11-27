@@ -2,38 +2,45 @@ package dao;
 
 import model.Service;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import java.util.List;
+import java.util.Optional;
 
 public class DaoService extends DaoGeneric<Service> {
 
-    protected DaoService(Connection connection){
-        super(connection, "services");
+    public DaoService() {
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
+        entityManager = entityManagerFactory.createEntityManager();
     }
 
     @Override
-    Service getObjectFromResultSet(ResultSet resultSet) throws SQLException {
-        int serviceId = resultSet.getInt("id");
-        String name = resultSet.getString("name");
-        return new Service(serviceId, name);
+    public Optional<Service> get(int id) {
+        return Optional.of(entityManager.find(Service.class, id));
     }
 
     @Override
-    String getInsertStatement(Service service) {
-        return "INSERT INTO " + tableName + " (name)" +
-                "VALUES ('" + service.getName() + "');";
+    public List<Service> getAll() {
+        return entityManager.createNamedQuery("Service.findAll", Service.class).getResultList();
     }
 
     @Override
-    String getUpdateStatement(Service service) {
-        return "UPDATE " + tableName
-                + " SET name = '" + service.getName()
-                + " WHERE id = " + service.getId() + ";";
+    public void save(Service service) {
+        entityManager.getTransaction().begin();
+        entityManager.persist(service);
+        entityManager.getTransaction().commit();
     }
 
     @Override
-    String getDeleteStatement(Service service) {
-        return "DELETE FROM " + tableName + " WHERE id = " + service.getId() + ";";
+    public void update(Service service) {
+        save(service);
+    }
+
+    @Override
+    public void delete(Service service) {
+        entityManager.getTransaction().begin();
+        entityManager.remove(service);
+        entityManager.getTransaction().commit();
     }
 }

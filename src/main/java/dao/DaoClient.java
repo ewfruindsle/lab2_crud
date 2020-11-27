@@ -2,37 +2,45 @@ package dao;
 
 import model.Client;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import java.util.List;
+import java.util.Optional;
 
 public class DaoClient extends DaoGeneric<Client> {
 
-    protected DaoClient(Connection connection){
-        super(connection, "clients");
-    }
-    @Override
-    Client getObjectFromResultSet(ResultSet resultSet) throws SQLException {
-        int clientId = resultSet.getInt("id");
-        String name = resultSet.getString("name");
-        String surname = resultSet.getString("surname");
-        return new Client(clientId, name, surname);
+    public DaoClient() {
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
+        entityManager = entityManagerFactory.createEntityManager();
     }
 
     @Override
-    String getInsertStatement(Client client) {
-        return "INSERT INTO " + tableName + "(name, surname) " +
-                "VALUES (" + client.getName() + ", " + client.getSurname() + ");";
+    public Optional<Client> get(int id) {
+        return Optional.of(entityManager.find(Client.class, id));
     }
 
     @Override
-    String getUpdateStatement(Client client) {
-        return "UPDATE " + tableName + " SET name = '" + client.getName() + "'"
-                + ", surname = '" + client.getSurname() + "' WHERE id = " + client.getId() + ";";
+    public List<Client> getAll() {
+        return entityManager.createNamedQuery("Client.findAll", Client.class).getResultList();
     }
 
     @Override
-    String getDeleteStatement(Client client) {
-        return "DELETE FROM " + tableName + " WHERE id = " +client.getId() + ";";
+    public void save(Client client) {
+        entityManager.getTransaction().begin();
+        entityManager.persist(client);
+        entityManager.getTransaction().commit();
+    }
+
+    @Override
+    public void update(Client client) {
+        save(client);
+    }
+
+    @Override
+    public void delete(Client client) {
+        entityManager.getTransaction().begin();
+        entityManager.remove(client);
+        entityManager.getTransaction().commit();
     }
 }

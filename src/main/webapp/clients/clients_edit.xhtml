@@ -10,6 +10,7 @@
         ID: <h:inputText value="#{clientBean.selectedClient.id}"  var = 'id'  disabled="true"/> <br/><br/>
         Name: <h:inputText value="#{clientBean.selectedClient.name}" var = 'name'/><br/><br/>
         Surname: <h:inputText value="#{clientBean.selectedClient.surname}" var = 'surname'/><br/><br/>
+        Client's subsidy type: <h:inputText value="#{clientBean.selectedClient.subsidyType}"/><br/><br/>
         <h:commandButton value="Save client" action="#{clientBean.saveSelectedClient()}"/><br/><br/>
         <h:commandButton value="Delete client" action="#{clientBean.removeClient}"/>
     </div>

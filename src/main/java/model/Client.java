@@ -1,9 +1,31 @@
 package model;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+@Entity
+@Table(name = "clients")
+@NamedQueries({
+        @NamedQuery(name = "Client.findAll", query = "select c from Client c")
+})
 public class Client {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+
+    @NotNull
+    @Pattern(regexp = "[A-Za-z]{2,20}")
     private String name;
+
+    @NotNull
+    @Pattern(regexp = "[A-Za-z]{2,20}")
     private String surname;
+
+    @Enumerated(EnumType.STRING)
+    private SubsidyType subsidyType;
+
 
     public Client() {
     }
@@ -45,5 +67,13 @@ public class Client {
                 ", name: ='" + name +
                 ", surname='" + surname +
                 '}';
+    }
+
+    public SubsidyType getSubsidyType() {
+        return subsidyType;
+    }
+
+    public void setSubsidyType(SubsidyType subsidyType) {
+        this.subsidyType = subsidyType;
     }
 }

@@ -2,45 +2,45 @@ package dao;
 
 import model.Bill;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import java.util.List;
+import java.util.Optional;
 
 public class DaoBill extends DaoGeneric<Bill> {
 
-    protected DaoBill(Connection connection) {
-        super(connection, "bills");
+    public DaoBill() {
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
+        entityManager = entityManagerFactory.createEntityManager();
     }
 
     @Override
-    Bill getObjectFromResultSet(ResultSet resultSet) throws SQLException {
-        int billId = resultSet.getInt("id");
-        int idService = resultSet.getInt("idservice");
-        int idClient = resultSet.getInt("idclient");
-        int totalPrice = resultSet.getInt("totalprice");
-        LocalDate date = resultSet.getDate("date").toLocalDate();
-        return new Bill(billId, idService, idClient, totalPrice, date);
+    public Optional<Bill> get(int id) {
+        return Optional.of(entityManager.find(Bill.class, id));
     }
 
     @Override
-    String getInsertStatement(Bill bill) {
-        return "INSERT INTO " + tableName + "(id service, idclient, totalprice, date " +
-                "VALUES (" + bill.getIdService() + ", " + bill.getIdClient() + ", " + bill.getTotalPrice() + ", " + bill.getDate() + ");";
+    public List<Bill> getAll() {
+        return entityManager.createNamedQuery("Bill.findAll", Bill.class).getResultList();
     }
 
     @Override
-    String getUpdateStatement(Bill bill) {
-        return "UPDATE " + tableName + " " +
-                "SET idservice = " + bill.getIdService()
-                + ", idclient = " + bill.getIdClient()
-                + ", totalprice = " + bill.getTotalPrice()
-                + ", date" + bill.getDate() +
-                " WHERE id = " + bill.getId() + ";";
+    public void save(Bill bill) {
+        entityManager.getTransaction().begin();
+        entityManager.persist(bill);
+        entityManager.getTransaction().commit();
     }
 
     @Override
-    String getDeleteStatement(Bill bill) {
-        return "DELETE FROM " + tableName + " WHERE id = " + bill.getId() + ";";
+    public void update(Bill bill) {
+        save(bill);
+    }
+
+    @Override
+    public void delete(Bill bill) {
+        entityManager.getTransaction().begin();
+        entityManager.createQuery("delete from Bill b where b.id = " + bill.getId()).executeUpdate();
+        entityManager.getTransaction().commit();
     }
 }

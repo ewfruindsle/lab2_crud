@@ -1,7 +1,20 @@
 package model;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+@Entity
+@Table
+@NamedQueries({
+        @NamedQuery(name = "Service.findAll", query = "select s from Service s")
+})
 public class Service {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Size(max = 100, message = "Name of the service must be less than 100 characters")
+    @NotNull
     private String name;
 
     public Service(){}

@@ -1,8 +1,6 @@
 package model.beans;
 
-import dao.ConnectionManager;
 import dao.DaoBill;
-import dao.TableName;
 import model.Bill;
 
 import javax.enterprise.context.SessionScoped;
@@ -15,7 +13,7 @@ import java.util.List;
 @ManagedBean(name = "billBean")
 @SessionScoped
 public class BillBean implements Serializable {
-    private DaoBill daoBill;
+    private final DaoBill daoBill;
     private Bill selectedBill;
 
     public Bill getSelectedBill() {
@@ -23,17 +21,11 @@ public class BillBean implements Serializable {
     }
 
     public BillBean() {
-        try {
-            daoBill = (DaoBill) ConnectionManager.shared().getDAO(TableName.BILL);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+       daoBill = new DaoBill();
     }
 
     public List<Bill> getBills() {
-        List<Bill> bills = daoBill.getAll();
-        bills.sort(Comparator.comparing(Bill::getId));
-        return bills;
+        return daoBill.getAll();
     }
 
     public String billInfo(Bill bill) {
