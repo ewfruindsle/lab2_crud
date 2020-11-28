@@ -2,13 +2,24 @@ package dao;
 
 import model.Service;
 
+import javax.ejb.Remove;
+import javax.ejb.Stateful;
+import javax.ejb.StatefulTimeout;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
+@Stateful
+@StatefulTimeout(value = 3, unit = TimeUnit.SECONDS)
 public class DaoService extends DaoGeneric<Service> {
+
+    private List<Service> cacheService;
+    @PersistenceContext(name = "default")
+    public EntityManager entityManager;
 
     public DaoService() {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
@@ -22,6 +33,10 @@ public class DaoService extends DaoGeneric<Service> {
 
     @Override
     public List<Service> getAll() {
+        if(cacheService != null){
+            return cacheService;
+        }
+        cacheService = entityManager.createNamedQuery("Service.findAll", Service.class).getResultList();
         return entityManager.createNamedQuery("Service.findAll", Service.class).getResultList();
     }
 
@@ -42,5 +57,10 @@ public class DaoService extends DaoGeneric<Service> {
         entityManager.getTransaction().begin();
         entityManager.remove(service);
         entityManager.getTransaction().commit();
+    }
+
+    @Remove
+    void remove(){
+        cacheService = null;
     }
 }

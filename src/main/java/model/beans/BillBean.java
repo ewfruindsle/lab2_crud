@@ -3,6 +3,7 @@ package model.beans;
 import dao.DaoBill;
 import model.Bill;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.util.List;
 @ManagedBean(name = "billBean")
 @SessionScoped
 public class BillBean implements Serializable {
+    @EJB
     private final DaoBill daoBill;
     private Bill selectedBill;
 

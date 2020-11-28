@@ -2,13 +2,21 @@ package dao;
 
 import model.Bill;
 
+import javax.ejb.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
+@Singleton
 public class DaoBill extends DaoGeneric<Bill> {
+
+    @PersistenceContext(name = "default")
+    public EntityManager entityManager;
+
+    private String str = "info";
 
     public DaoBill() {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");

@@ -2,13 +2,19 @@ package dao;
 
 import model.Client;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
+@Stateless
 public class DaoClient extends DaoGeneric<Client> {
+
+    @PersistenceContext(name = "default")
+    public EntityManager entityManager;
 
     public DaoClient() {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
@@ -35,6 +41,7 @@ public class DaoClient extends DaoGeneric<Client> {
     @Override
     public void update(Client client) {
         save(client);
+        updateDbData();
     }
 
     @Override
@@ -42,5 +49,14 @@ public class DaoClient extends DaoGeneric<Client> {
         entityManager.getTransaction().begin();
         entityManager.remove(client);
         entityManager.getTransaction().commit();
+    }
+
+    void updateDbData(){
+        try{
+            Thread.sleep(1000);
+            System.out.println("Data was updated");
+        } catch (Exception ex){
+            System.out.println("Data wasn't updated");
+        }
     }
 }

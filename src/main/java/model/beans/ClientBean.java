@@ -4,6 +4,7 @@ package model.beans;
 import dao.DaoClient;
 import model.Client;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
 import java.sql.SQLException;
@@ -13,6 +14,7 @@ import java.util.List;
 @ManagedBean(name = "clientBean")
 @RequestScoped
 public class ClientBean {
+    @EJB
     private final DaoClient daoClient;
     private Client selectedClient;
 
